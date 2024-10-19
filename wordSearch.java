@@ -6,6 +6,7 @@ public class wordSearch {
     private static Scanner input = new Scanner(System.in);
     public static String[] wordList;
     public static char[][] puzzle = new char[20][20];
+    public static char[][] solution = new char[20][20];
     public static void main(String[] args) {
         intro();
 
@@ -42,14 +43,13 @@ public class wordSearch {
         switch (response) {
             case 1: 
                 wordList = create();
+                construct();
                 break;
             case 2:
-                construct(false);
                 view(puzzle);
                 break;
             case 3:
-                construct(true);
-                view(puzzle);
+                view(solution);
                 break;
             case 4:
                 return false;
@@ -80,6 +80,7 @@ public class wordSearch {
         return goodLength;
     } // end of lengthChecker method
 
+    // explains rules of creating puzzle and takes user input of words
     public static int createIntro () {
         System.out.println("\nRules for Creating Word Search:\n");
         System.out.println("1. Each word must be at least 5 letters");
@@ -136,48 +137,86 @@ public class wordSearch {
     } // end of randomLetter method
 
     //prints garbage characters in appropriate spaces
-    public static void garbageChar(int x, int y, Boolean solution) {
-        while (x < 20) {
-            if (solution == true) {
-                puzzle[x][y] = '*';
-            } // end of if statement
-            else {
-                puzzle[x][y] = randomLetter();
-            } // end of else statement
-            x++;
-        } // end of while loop
+    public static void garbageChar() {
+        for(int x = 0; x < 20; x++) {
+            for (int y = 0; y < 20; y++) {
+                    solution[x][y] = '*';
+                    puzzle[x][y] = randomLetter();
+            }// end of nested for loop
+        } // end of for loop
+    } // end of garabgeChar method
+
+    //chooses what type of layout the word will get
+    public static int layout() {
+        SecureRandom random = new SecureRandom();
+        // 0 = horizontal, 1 = vertical, and 2 = diagonal
+        int randNum = random.nextInt(3);
+        return randNum;
+    } // end of layout method
+
+    // ***NOTE*** work on starting point array so that words don't start at the same point
+    public static int randomIndex() {
+        SecureRandom random = new SecureRandom();
+        int randNum = random.nextInt(11);
+        return randNum;
+    }
+
+    // decides increment of indexes after each letter in a word
+    public static int[] afterLetter(int[] index) {
+        if (index[2] == 0) {
+            index[0]++;
+        } // end of if statement
+        else if (index[2] == 1) {
+            index[1]++;
+        } // end of else if statement
+        else if (index[2] == 2) {
+            index[0]++;
+            index[1]++;
+        } // end of else if statement
+        return index;
+    } // end of afterLetter method
+
+    // decides increment of indexes after each word in the word list
+    public static int[] afterWord(int index[]) {
+        if (index[0] > 12) {
+            index[0] = 0;
+        } // end of if statement
+        else if (index[1] > 12) {
+            index[1] = 0;
+        } // end of else if statement
+        else if (index[2] == 0) {
+            index[1]++;
+        } // end of else if statement
+        else if (index[2] == 1) {
+            index[0]++;
+        } // end of else if statement
+        return index;
     }
 
     // creates the word search puzzle stored in a 2d array
-    public static void construct(Boolean solution){
-        int x = 0;
-        int y = 0;
+    public static void construct(){
+        int[] index = {randomIndex(), randomIndex(), 0}; // x of 2ds, y of 2ds, layout type
+        garbageChar();
         for (int i = 0; i < wordList.length; i ++) {
+            index[2] = layout();
             for (int u = 0; u < wordList[i].length(); u++) {
                 char letter = wordList[i].charAt(u);
                 int number = (int)letter;
                 if (number > 64 && number < 91) { // uses Dec value to test if char is letter
-                    puzzle[x][y] = letter;
-                    x++;
+                    puzzle[index[0]][index[1]] = letter;
+                    solution[index[0]][index[1]] = letter;
+                    afterLetter(index);
                 } // end of if statement
             } // end of nested for loop
-            garbageChar(x, y, solution);
-            x = 0;
-            y++;
-        } // end of for loop
-        for (int i = 0; i < 20 - wordList.length; i ++) {
-            garbageChar(x, y, solution);
-            x = 0;
-            y++;
+            afterWord(index);
         } // end of for loop
     } // end of create method
 
     //Prints out the puzzle w/o solution
-    public static void view(char[][] puzzle) {
-        
+    public static void view(char[][] type) {
         for (int y = 0; y < 20; y++) {
             for (int x = 0; x < 20; x++) {
-                System.out.print(puzzle[x][y] + " ");
+                System.out.print(type[x][y] + " ");
             } // end of nested for loop
             System.out.println();
         } // end of for loop
