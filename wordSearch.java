@@ -1,3 +1,8 @@
+//Name: Juliana Serrano
+//Date: 10/22/2024
+//Assignment: 1 - Word Search
+//Description: Creates a word search from user input words
+
 import java.util.Scanner;
 import java.security.SecureRandom;
 
@@ -19,7 +24,7 @@ public class wordSearch {
 
     } // end of main method
     
-    //introdces the program to the user
+    // introduces the program to the user
     public static void intro() {
         System.out.println("Welcome to the Word Search Generator");
         System.out.println("This program will take some words and");
@@ -35,24 +40,24 @@ public class wordSearch {
         System.out.println("4) Quit");
     } // end of menu method
 
-    //displays options of the program to the user
+    // displays options of the program to the user
     public static Boolean choice() {
         menu();
 
         int response = input.nextInt();
         input.nextLine();
         switch (response) {
-            case 1: 
+            case 1: // create a word search puzzle
                 wordList = create();
                 construct();
                 break;
-            case 2:
+            case 2: // view the created word search puzzle
                 view(puzzle);
                 break;
-            case 3:
+            case 3:// view the solution of the word search puzzle
                 view(solution);
                 break;
-            case 4:
+            case 4: // exit the program
                 return false;
             default:
                 System.out.println("That is not a valid option. Try again.");
@@ -60,7 +65,7 @@ public class wordSearch {
         return true;
     } // end of menu method
 
-    //checks if the length of a word is in the correct range
+    // checks if the length of a word is in the correct range
     public static Boolean lengthChecker(String word) {
         Boolean goodLength = true;
         String justLetters = " ";
@@ -170,14 +175,16 @@ public class wordSearch {
         return index;
     } // end of afterLetter method
 
-    // decides increment of indexes after each word in the word list
+    // decides the starting indexes of the next word
     public static int[] startingIndex(int index[]) {
         SecureRandom random = new SecureRandom(); 
         index[0] = random.nextInt(11);
-        if (index[2] == 0) {
+        // if the word has a horizontal layout the y index may range up to 19
+        if (index[2] == 0) { 
             index[1] = random.nextInt(19);
         } // end of if statement
-        else if (index[2] == 1 || index[2] == 2) {
+        // if the word has a diagonal or vertical layout its range is up to 11
+        else if (index[2] == 1 || index[2] == 2) { 
             index[1] = random.nextInt(11);
         } // end of else if statement
         return index;
@@ -185,9 +192,9 @@ public class wordSearch {
 
     // tracks the indexes that the words use
     public static int[] trackIndexes (int[] index, int[] usedIndexes, int k) {
-        usedIndexes[k] = index[0] + 1;
+        usedIndexes[k] = index[0] + 1; // x index
         k++;
-        usedIndexes[k] = index[1] + 1;
+        usedIndexes[k] = index[1] + 1; // y index 
         return usedIndexes;
     } // end of trackIndexes method
 
@@ -198,7 +205,8 @@ public class wordSearch {
         int x = index[0] + 1;
         int y = index[1] + 1;
         int[] testIndexes = new int[wordIndexes];
-        for (int j = 0; j < word.length(); j ++) {
+        // goes through word and assigns the letters indexes
+        for (int j = 0; j < word.length(); j ++) { 
             testIndexes[k] = x;
             k++;
             testIndexes[k] = y;
@@ -222,6 +230,7 @@ public class wordSearch {
         Boolean badPlace = false;
         for (int i = 0; i < testIndexes.length; i+= 2) {
             for (int u = 0; u < usedIndexes.length; u += 2) {
+                // if a test indexe is the same as an used indexe it will return badPlace as true
                 if (testIndexes[i] == usedIndexes[u] && testIndexes[i + 1] == usedIndexes[u + 1]) {
                     badPlace = true;
                     break;
@@ -248,7 +257,7 @@ public class wordSearch {
     public static void construct(){
         int[] index = {0, 0, 0}; // x of 2d arrays, y of 2d arrays, layout type
         int[] usedIndexes = new int[wordList.length * 16];
-        int k = 0;
+        int k = 0; // tracks index for usedIndexes
         garbageChar();
         for (int i = 0; i < wordList.length; i ++) {
             index[2] = layout();
