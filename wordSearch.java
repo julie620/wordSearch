@@ -161,7 +161,7 @@ public class wordSearch {
     } // end of layout method
 
     // decides increment of indexes after each letter in a word
-    public static int[] afterLetter(int[] index) {
+    public static void afterLetter(int[] index) {
         if (index[2] == 0) {
             index[0]++;
         } // end of if statement
@@ -172,11 +172,10 @@ public class wordSearch {
             index[0]++;
             index[1]++;
         } // end of else if statement
-        return index;
     } // end of afterLetter method
 
     // decides the starting indexes of the next word
-    public static int[] startingIndex(int index[]) {
+    public static void startingIndex(int index[]) {
         SecureRandom random = new SecureRandom(); 
         index[0] = random.nextInt(11);
         // if the word has a horizontal layout the y index may range up to 19
@@ -187,15 +186,13 @@ public class wordSearch {
         else if (index[2] == 1 || index[2] == 2) { 
             index[1] = random.nextInt(11);
         } // end of else if statement
-        return index;
     } // end of afterWord method
 
     // tracks the indexes that the words use
-    public static int[] trackIndexes (int[] index, int[] usedIndexes, int k) {
+    public static void trackIndexes (int[] index, int[] usedIndexes, int k) {
         usedIndexes[k] = index[0] + 1; // x index
         k++;
         usedIndexes[k] = index[1] + 1; // y index 
-        return usedIndexes;
     } // end of trackIndexes method
 
     // records potential index postions of a word
