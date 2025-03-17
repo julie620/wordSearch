@@ -1,9 +1,7 @@
-Juliana Serrano
+## Word Search
 
-10/22/2024
+This program allows you to create a word search puzzle from user-input words
 
-CS 145
+## Program Description
 
-Assignment 1: Word Search
-
-Creates a word search from user-input words
+The program will randomly place user-input words into a 20x20 word search. The user can then reveal the solution or create a new puzzle.

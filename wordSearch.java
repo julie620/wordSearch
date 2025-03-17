@@ -1,7 +1,9 @@
-//Name: Juliana Serrano
-//Date: 10/22/2024
-//Assignment: 1 - Word Search
-//Description: Creates a word search from user input words
+/*
+ * Author: Juliana Serrano
+ * Last Modified: 10/22/2024
+ * Assignment 1 - Word Search
+ * The program creates a word search from user-input words
+*/
 
 import java.util.Scanner;
 import java.security.SecureRandom;
